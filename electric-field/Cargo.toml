@@ -4,11 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-ndarray = "0.15"
-ndarray-linalg = "0.16"
-num-complex = "0.4"
-ode_solvers = "0.6"
-uom = "0.36"
-gnuplot = "0.0.44"
+ndarray = "0.16"
 rayon = "1.10"
-rand = "0.8"
+eframe = "0.29"
+egui = "0.29"
+
