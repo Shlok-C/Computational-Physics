@@ -11,6 +11,13 @@ struct Vector2D {
 }
 
 impl Vector2D {
+    fn new(x: f64, y: f64) -> Self {
+        Self {
+            x: x,
+            y: y
+        }
+    }
+
     fn magnitude(&self) -> f64 {
         (self.x.powi(2) + self.y.powi(2)).sqrt()
     }
@@ -29,6 +36,18 @@ struct Grid<T> {
     space: Array2<T>
 }
 
+impl Grid<T> {
+    fn new<T>(size: u64) -> Self {
+        Self {
+            space: Array2::<T>::zeros((size, size)), // find a way to have empty spots in array for charges (empty charges?)
+        }
+    }
+
+    fn update<T>(&self, member: T, position: Vector2D) {
+        self.space[[position.x, position.y]] = member;
+    }
+}
+
 struct Charge {
     magnitude: f64,
     position: Vector2D, // position vector
@@ -40,10 +59,24 @@ struct ElectricField {
 }
 
 impl ElectricField {
+    fn new() -> Self {
+        Self {
+            grid: Grid::<Charge>new(),
+            charges: vec![]
+        }
+    }
+
+    fn add_charge(&self, position: Vector2D, q: f64) {
+        let charge = Charge{ magnitude: q, position: position };
+
+        self.charges.push(charge);
+        self.grid.update(charge, position);
+    }
+
     fn calc_field_strength(&self, pos: &Vector2D) -> Vector2D { // takes in position vector -> returns field vector
         // Coulomb's Law
 
-        let mut field_strength = Vector2D{ x: 0.0, y: 0.0 };
+        let mut field_strength = Vector2D::new(0.0, 0.0);
 
         for charge in self.charges.iter() {
             let dr = pos.delta(&charge.position);
@@ -62,5 +95,7 @@ impl ElectricField {
 }
 
 fn main() {
-    
+    // let e_field = ElectricField::new();
+
+    println!("Test");
 }
